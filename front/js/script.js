@@ -2,30 +2,46 @@
 fetch("http://localhost:3000/api/products")
     .then((res) => res.json())
     .then((data) => {
-        console.log(data)
+        //console.log(data)
         return addProducts(data)
     })
 
 // On récupère les données
 // On récupère l'image URL du premier article
-function addProducts(datas) {
-    const id = datas[0]._id
-    const imageUrl = datas[0].imageUrl
-    const altTxt = datas[0].altTxt
-    const name = datas[0].name
-    const description = datas[0].description
-    //console.log(name)
+function addProducts(data) {
+    //const _id = data[0]._id
+    //const imageUrl = data[0].imageUrl
+    //const altTxt = data[0].altTxt
+    //const name = data[0].name
+    //const description = data[0].description
+    console.log(data)
 
+    
+    // On affiche les autres articles / canapés
+    for (let i = 0; i < data.length; i++) {
+        console.log("couch number", i, data[i])
+    }
+    const {_id, imageUrl, altTxt, name, price, description} = data[0]
+    //console.log(_id)
+    //console.log(name)
+    //console.log(price)
+    //console.log(imageUrl)
+    //console.log(description)
+    //console.log(altTxt)
+    const anchor = makeAnchor(_id)
+    const article = document.createElement("article")
     const image = makeImage(imageUrl, altTxt)
-    const anchor = makeAnchor(id)
-    const article = makeArticle()
     const h3 = makeH3(name)
     const p = makeParagraph(description)
 
+    appendElementToArticle(article, image, h3, p)
+    appendArticleToAnchor(anchor, article)
+}
+
+function appendElementToArticle(article, image, h3, p) {
     article.appendChild(image)
     article.appendChild(h3)
     article.appendChild(p)
-    appendChildren(anchor, article)
 }
 
 //On créé le lien vers la page product depuis le produit de l'API
@@ -36,7 +52,7 @@ function makeAnchor(id) {
 }
 
 // On insère l'image du canapé depuis l'API
-function appendChildren(anchor, article) {
+function appendArticleToAnchor(anchor, article) {
     const items = document.querySelector('#items');
     if (items != null) {
         items.appendChild(anchor)
@@ -53,15 +69,8 @@ function makeImage(imageUrl, altTxt) {
     return image
 }
 
-//On affiche la balise de l'article contenant l'image, le titre h3 et le paragraphe
-function makeArticle() {
-    const article = document.createElement("article")
-    //const image = makeImage()
-    //const p = makeParagraph()
-    //console.log(article)
-    return article
-}
 
+// Titre de l'article
 function makeH3(name) {
     const h3 = document.createElement("h3")
     h3.textContent = name
@@ -69,6 +78,7 @@ function makeH3(name) {
     return h3
 }
 
+//Paragraphe de notre article
 function makeParagraph(description) {
     const p = document.createElement("p")
     p.textContent = description
