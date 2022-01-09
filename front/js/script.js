@@ -9,33 +9,21 @@ fetch("http://localhost:3000/api/products")
 // On récupère les données
 // On récupère l'image URL du premier article
 function addProducts(data) {
-    //const _id = data[0]._id
-    //const imageUrl = data[0].imageUrl
-    //const altTxt = data[0].altTxt
-    //const name = data[0].name
-    //const description = data[0].description
-    console.log(data)
 
-    
     // On affiche les autres articles / canapés
-    for (let i = 0; i < data.length; i++) {
-        console.log("couch number", i, data[i])
-    }
-    const {_id, imageUrl, altTxt, name, price, description} = data[0]
-    //console.log(_id)
-    //console.log(name)
-    //console.log(price)
-    //console.log(imageUrl)
-    //console.log(description)
-    //console.log(altTxt)
-    const anchor = makeAnchor(_id)
-    const article = document.createElement("article")
-    const image = makeImage(imageUrl, altTxt)
-    const h3 = makeH3(name)
-    const p = makeParagraph(description)
+    data.forEach((couch) => {
+        //console.log("couch number : ", couch)
 
-    appendElementToArticle(article, image, h3, p)
-    appendArticleToAnchor(anchor, article)
+        const {_id, imageUrl, altTxt, name, price, description} = couch
+        const anchor = makeAnchor(_id)
+        const article = document.createElement("article")
+        const image = makeImage(imageUrl, altTxt)
+        const h3 = makeH3(name)
+        const p = makeParagraph(description)
+
+        appendElementToArticle(article, image, h3, p)
+        appendArticleToAnchor(anchor, article)
+    })
 }
 
 function appendElementToArticle(article, image, h3, p) {
