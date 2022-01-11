@@ -17,9 +17,9 @@ function addProducts(data) {
         const {_id, imageUrl, altTxt, name, price, description} = couch
         const anchor = makeAnchor(_id)
         const article = document.createElement("article")
-        const image = makeImage(imageUrl, altTxt)
-        const h3 = makeH3(name)
-        const p = makeParagraph(description)
+        const image = loadImage(imageUrl, altTxt)
+        const h3 = loadH3(name)
+        const p = loadParagraph(description)
 
         appendElementToArticle(article, image, h3, p)
         appendArticleToAnchor(anchor, article)
@@ -50,7 +50,7 @@ function appendArticleToAnchor(anchor, article) {
 }
 
 // On affiche l'image depuis l'API
-function makeImage(imageUrl, altTxt) {
+function loadImage(imageUrl, altTxt) {
     const image = document.createElement("img")
     image.src = imageUrl
     image.alt = altTxt
@@ -59,7 +59,7 @@ function makeImage(imageUrl, altTxt) {
 
 
 // Titre de l'article
-function makeH3(name) {
+function loadH3(name) {
     const h3 = document.createElement("h3")
     h3.textContent = name
     h3.classList.add("productName")//On ajoute une classe au h3
@@ -67,7 +67,7 @@ function makeH3(name) {
 }
 
 //Paragraphe de notre article
-function makeParagraph(description) {
+function loadParagraph(description) {
     const p = document.createElement("p")
     p.textContent = description
     p.classList.add("productDescription")
