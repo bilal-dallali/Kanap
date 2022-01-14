@@ -1,13 +1,16 @@
 const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
 const id = urlParams.get("id")
+if (id != null) {
+    let itemPrice = 0
+}
 
 fetch(`http://localhost:3000/api/products/${id}`)
 .then((response) => response.json())
 .then((res) => handleData(res))
 
 function handleData(couch) {
-    console.log({couch})
+    //console.log({couch})
     const { altTxt, colors, description, imageUrl, name, price, _id } = couch
     loadImage(imageUrl, altTxt)
     loadTitle(name)
@@ -18,37 +21,37 @@ function handleData(couch) {
 
 //Afficher l'image
 function loadImage(imageUrl, altTxt) {
-    const image = document.createElement("img")
-    image.src = imageUrl
-    image.alt = altTxt
-    const parent = document.querySelector(".item_img")
-    if (parent != null) parent.appendChild(image)
-    console.log(parent)
-    console.log(altTxt)
-    console.log(imageUrl)
+    const canape = document.createElement("img")
+    canape.src = imageUrl
+    canape.alt = altTxt
+    const parent = document.querySelector(".item__img")
+    if (parent != null) parent.appendChild(canape)
+    //console.log(parent)
+    //console.log(altTxt)
+    //console.log(imageUrl)
 }
 
 //Afficher le titre
 function loadTitle(name) {
-    const h1 = document.querySelector('#title')
+    const h1 = document.getElementById("title")
     if (h1 != null) h1.textContent = name
 }
 
 //Afficher le prix
 function loadPrice(price) {
-    const span = document.querySelector("#price")
+    const span = document.getElementById("price")
     if (span != null) span.textContent = price
 }
 
 //Afficher la description
 function loadDescription(description) {
-    const p = document.querySelector("#description")
+    const p = document.getElementById("description")
     if (p != null) p.textContent = description
 }
 
 //Afficher le choix des couleurs
 function loadColors(colors) {
-    const select = document.querySelector("#colors")
+    const select = document.getElementById("colors")
     if (select != null) {
         colors.forEach((color) => {
             const option = document.createElement("option")
@@ -57,4 +60,23 @@ function loadColors(colors) {
             select.appendChild(option)
         })
     }
+}
+
+
+const button = document.getElementById("addToCart")
+if (button != null) {
+    button.addEventListener("click", (e) => {
+        const colors = document.getElementById("colors").value
+        const quantity = document.getElementById("quantity").value
+        if (colors == null || colors === "" || quantity == null || quantity == 0) {
+            alert("Please choose a color and quantity")
+        }
+        const data = {
+            id: id,
+            color: colors,
+            quantity: Number(quantity),
+            price: itemPrice
+        }
+        localStorage.setItem(id, data)
+    })
 }
