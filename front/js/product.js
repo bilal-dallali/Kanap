@@ -12,6 +12,7 @@ fetch(`http://localhost:3000/api/products/${id}`)
 function handleData(couch) {
     //console.log({couch})
     const { altTxt, colors, description, imageUrl, name, price, _id } = couch
+    itemPrice = price
     loadImage(imageUrl, altTxt)
     loadTitle(name)
     loadPrice(price)
@@ -63,11 +64,11 @@ function loadColors(colors) {
 }
 
 
-const button = document.getElementById("addToCart")
+const button = document.querySelector("#addToCart")
 if (button != null) {
     button.addEventListener("click", (e) => {
-        const colors = document.getElementById("colors").value
-        const quantity = document.getElementById("quantity").value
+        const colors = document.querySelector("#colors").value
+        const quantity = document.querySelector("#quantity").value
         if (colors == null || colors === "" || quantity == null || quantity == 0) {
             alert("Please choose a color and quantity")
         }
@@ -77,6 +78,7 @@ if (button != null) {
             quantity: Number(quantity),
             price: itemPrice
         }
-        localStorage.setItem(id, data)
+        localStorage.setItem(id, JSON.stringify(data))
+        window.location.href = "cart.html"
     })
 }
