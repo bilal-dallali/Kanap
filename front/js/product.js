@@ -3,6 +3,7 @@ const urlParams = new URLSearchParams(queryString)
 const id = urlParams.get("id")
 if (id != null) {
     let itemPrice = 0
+    let imgUrl, altText
 }
 
 fetch(`http://localhost:3000/api/products/${id}`)
@@ -10,9 +11,10 @@ fetch(`http://localhost:3000/api/products/${id}`)
 .then((res) => handleData(res))
 
 function handleData(couch) {
-    //console.log({couch})
     const { altTxt, colors, description, imageUrl, name, price, _id } = couch
     itemPrice = price
+    imgUrl = imageUrl
+    altText = altTxt
     loadImage(imageUrl, altTxt)
     loadTitle(name)
     loadPrice(price)
@@ -27,9 +29,6 @@ function loadImage(imageUrl, altTxt) {
     canape.alt = altTxt
     const parent = document.querySelector(".item__img")
     if (parent != null) parent.appendChild(canape)
-    //console.log(parent)
-    //console.log(altTxt)
-    //console.log(imageUrl)
 }
 
 //Afficher le titre
@@ -65,20 +64,37 @@ function loadColors(colors) {
 
 
 const button = document.querySelector("#addToCart")
-if (button != null) {
-    button.addEventListener("click", (e) => {
-        const colors = document.querySelector("#colors").value
-        const quantity = document.querySelector("#quantity").value
-        if (colors == null || colors === "" || quantity == null || quantity == 0) {
-            alert("Please choose a color and quantity")
-        }
-        const data = {
-            id: id,
-            color: colors,
-            quantity: Number(quantity),
-            price: itemPrice
-        }
-        localStorage.setItem(id, JSON.stringify(data))
-        window.location.href = "cart.html"
-    })
+button.addEventListener("click", handleClick)
+
+function handleClick() {
+    const colors = document.querySelector("#colors").value
+    const quantity = document.querySelector("#quantity").value
+        
+    if (isOrderInvalid(colors, quantity)) return
+    saveOrder(colors, quantity)
+    redirectToCart()
+}
+
+
+function saveOrder(colors, quantity) {
+    const data = {
+        id: id,
+        color: colors,
+        quantity: Number(quantity),
+        price: itemPrice,
+        imageUrl: imgUrl,
+        altText: altText
+    }
+    localStorage.setItem(id, JSON.stringify(data))
+}
+
+function isOrderInvalid(colors, quantity) {
+    if (colors == null || colors === "" || quantity == null || quantity == 0) {
+        alert("Please choose a color and quantity")
+        return true
+    }
+}
+
+function redirectToCart() {
+    window.location.href = "cart.html"
 }
