@@ -46,17 +46,35 @@ function loadCartContent(item) {
     cardItemContent.classList.add("cart__item__content")
 
     const description = loadDescription(item)
-    const settings = loadSettings()
+    const settings = loadSettings(item)
 
     cardItemContent.appendChild(description)
     cardItemContent.appendChild(settings)
     return cardItemContent
 }
 
-function loadSettings() {
+function loadSettings(item) {
     const settings = document.createElement("div")
     settings.classList.add("cart__item__content__settings")
+
+    addQuantityToSettings(settings, item)
     return settings
+}
+
+function addQuantityToSettings(settings, item) {
+    const quantity = document.createElement("div")
+    quantity.classList.add("cart__item__content__settings__quantity")
+    const p = document.createElement("p")
+    p.textContent = "Qté : "
+    quantity.appendChild(p)
+    const input = document.createElement("input")
+    input.type = "number"
+    input.classList.add("itemQuantity")
+    input.name = "itemQuantity"
+    input.min = "1"
+    input.max = "100"
+    input.value = item.quantity
+    settings.appendChild(input)
 }
 
 function loadDescription(item) {
