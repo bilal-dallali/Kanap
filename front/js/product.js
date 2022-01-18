@@ -3,7 +3,7 @@ const urlParams = new URLSearchParams(queryString)
 const id = urlParams.get("id")
 if (id != null) {
     let itemPrice = 0
-    let imgUrl, altText
+    let imgUrl, altText, ArticleName
 }
 
 fetch(`http://localhost:3000/api/products/${id}`)
@@ -11,10 +11,12 @@ fetch(`http://localhost:3000/api/products/${id}`)
 .then((res) => handleData(res))
 
 function handleData(couch) {
+    //let imgUrl, altText, ArticleName
     const { altTxt, colors, description, imageUrl, name, price, _id } = couch
     itemPrice = price
     imgUrl = imageUrl
     altText = altTxt
+    ArticleName = name
     loadImage(imageUrl, altTxt)
     loadTitle(name)
     loadPrice(price)
@@ -83,7 +85,8 @@ function saveOrder(colors, quantity) {
         quantity: Number(quantity),
         price: itemPrice,
         imageUrl: imgUrl,
-        altText: altText
+        altText: altText,
+        name: ArticleName
     }
     localStorage.setItem(id, JSON.stringify(data))
 }
