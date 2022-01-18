@@ -20,7 +20,7 @@ function handleData(couch) {
     loadImage(imageUrl, altTxt)
     loadTitle(name)
     loadPrice(price)
-    loadDescription(description)
+    loadCartDescription(description)
     loadColors(colors)
 }
 
@@ -46,7 +46,7 @@ function loadPrice(price) {
 }
 
 //Afficher la description
-function loadDescription(description) {
+function loadCartDescription(description) {
     const p = document.getElementById("description")
     if (p != null) p.textContent = description
 }

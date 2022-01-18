@@ -16,7 +16,7 @@ cart.forEach((item) => displayItem(item))
 function retrieveItemsFromCache() {
     const numberOfItems = localStorage.length
     for(let i = 0; i < numberOfItems; i++){
-        const item = localStorage.getItem(localStorage.key(i))
+        const item = localStorage.getItem(localStorage.key(i)) || ""
         const itemObject = JSON.parse(item)
         cart.push(itemObject)
     }
@@ -24,26 +24,47 @@ function retrieveItemsFromCache() {
 
 function displayItem(item) {
     const article = makeArticle(item)
-    displayArticle(article)
     //console.log(article)
-    const div = makeImageDiv(item)
-    article.appendChild(div)
+    const imageDiv = makeImageDiv(item)
+    article.appendChild(imageDiv)
 
-    const cardItemContent = loadCardItemContent(item)
+    const cardItemContent = loadCartContent(item)
     article.appendChild(cardItemContent)
+    displayArticle(article)
 }
-
-function loadCardItemContent(item) {
+/*
+function loadCartItemContent() {
     const div = document.createElement("div")
     div.classList.add("cart__item__content")
+}
+*/
 
+
+
+function loadCartContent(item) {
+    const cardItemContent = document.createElement("div")
+    cardItemContent.classList.add("cart__item__content")
+
+    const description = loadDescription(item)
+    const settings = loadSettings()
+
+    cardItemContent.appendChild(description)
+    cardItemContent.appendChild(settings)
+    return cardItemContent
+}
+
+function loadSettings() {
+    const settings = document.createElement("div")
+    settings.classList.add("cart__item__content__settings")
+    return settings
+}
+
+function loadDescription(item) {
     const description = document.createElement("div")
     description.classList.add("cart__item__content__description")
 
     const h2 = document.createElement("h2")
     h2.textContent = item.name
-    //console.log(item)
-
     const p = document.createElement("p")
     p.textContent = item.color
     const p2 = document.createElement("p")
@@ -52,9 +73,7 @@ function loadCardItemContent(item) {
     description.appendChild(h2)
     description.appendChild(p)
     description.appendChild(p2)
-    div.appendChild(description)
-    //console.log(div)
-    return div
+    return description
 }
 
 function displayArticle(article) {
