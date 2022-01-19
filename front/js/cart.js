@@ -24,7 +24,6 @@ function retrieveItemsFromCache() {
 
 function displayItem(item) {
     const article = makeArticle(item)
-    //console.log(article)
     const imageDiv = makeImageDiv(item)
     article.appendChild(imageDiv)
 
@@ -32,14 +31,6 @@ function displayItem(item) {
     article.appendChild(cardItemContent)
     displayArticle(article)
 }
-/*
-function loadCartItemContent() {
-    const div = document.createElement("div")
-    div.classList.add("cart__item__content")
-}
-*/
-
-
 
 function loadCartContent(item) {
     const cardItemContent = document.createElement("div")
@@ -58,7 +49,17 @@ function loadSettings(item) {
     settings.classList.add("cart__item__content__settings")
 
     addQuantityToSettings(settings, item)
+    addDeleteToSettings(settings)
     return settings
+}
+
+function addDeleteToSettings(settings, item) {
+    const div = document.createElement("div")
+    div.classList.add("cart__item__content__settings__delete")
+    const p = document.createElement("p")
+    p.textContent = "Supprimer"
+    div.appendChild(p)
+    settings.appendChild(div)
 }
 
 function addQuantityToSettings(settings, item) {
