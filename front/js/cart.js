@@ -28,12 +28,25 @@ function displayItem(item) {
     const cardItemContent = loadCartContent(item)
     article.appendChild(cardItemContent)
     displayArticle(article)
-    displayTotalQuantity(item)
+    displayTotalQuantity()
+    displayTotalPrice()
 }
 
-function displayTotalQuantity(item) {
+function displayTotalQuantity() {
     const totalQuantity = document.getElementById("totalQuantity")
-    totalQuantity.textContent = item.quantity
+    const total = cart.reduce((total, item) => total + item.quantity, 0)
+    totalQuantity.textContent = total
+}
+
+function displayTotalPrice() {
+    let total = 0
+    const totalPrice = document.getElementById("totalPrice")
+
+    cart.forEach((item) => {
+        const totalUnitPrice = item.price * item.quantity
+        total += totalUnitPrice
+    })
+    totalPrice.textContent = total
 }
 
 function loadCartContent(item) {
