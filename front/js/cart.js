@@ -1,10 +1,8 @@
 // Récupérer les données du local storage
-//console.log(numberOfArticles)
 const cart = []
 
 retrieveItemsFromCache()
 cart.forEach((item) => displayItem(item))
-//console.log(cart)
 
 // altText: "Photo d'un canapé bleu, deux places"
 // color: "Black"
@@ -30,6 +28,12 @@ function displayItem(item) {
     const cardItemContent = loadCartContent(item)
     article.appendChild(cardItemContent)
     displayArticle(article)
+    displayTotalQuantity(item)
+}
+
+function displayTotalQuantity(item) {
+    const totalQuantity = document.getElementById("totalQuantity")
+    totalQuantity.textContent = item.quantity
 }
 
 function loadCartContent(item) {
@@ -75,7 +79,9 @@ function addQuantityToSettings(settings, item) {
     input.min = "1"
     input.max = "100"
     input.value = item.quantity
-    settings.appendChild(input)
+
+    quantity.appendChild(input)
+    settings.appendChild(quantity)
 }
 
 function loadDescription(item) {
@@ -114,7 +120,6 @@ function makeImageDiv(item) {
     const image = document.createElement("img")
     image.src = item.imageUrl
     image.alt = item.altText
-    //console.log(item)
     div.appendChild(image)
     return div
 }
