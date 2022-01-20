@@ -11,7 +11,6 @@ fetch(`http://localhost:3000/api/products/${id}`)
 .then((res) => handleData(res))
 
 function handleData(couch) {
-    //let imgUrl, altText, ArticleName
     const { altTxt, colors, description, imageUrl, name, price, _id } = couch
     itemPrice = price
     imgUrl = imageUrl
@@ -79,6 +78,7 @@ function handleClick() {
 
 
 function saveOrder(colors, quantity) {
+    const key = `${id}-${colors}`
     const data = {
         id: id,
         color: colors,
@@ -88,7 +88,7 @@ function saveOrder(colors, quantity) {
         altText: altText,
         name: ArticleName
     }
-    localStorage.setItem(id, JSON.stringify(data))
+    localStorage.setItem(key, JSON.stringify(data))
 }
 
 function isOrderInvalid(colors, quantity) {

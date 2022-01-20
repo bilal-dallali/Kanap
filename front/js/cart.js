@@ -102,6 +102,7 @@ function addQuantityToSettings(settings, item) {
 function updatePriceAndQuantity(id, newValue, item) {
     const itemToUpdate = cart.find(item => item.id === id)
     itemToUpdate.quantity = Number(newValue)
+    item.quantity = itemToUpdate.quantity
     displayTotalQuantity()
     displayTotalPrice()
     saveNewDataToCacheItem(item)
@@ -110,6 +111,7 @@ function updatePriceAndQuantity(id, newValue, item) {
 // Le local storage doit stocker les changements de quantité depuis le panier
 function saveNewDataToCacheItem(item) {
     const dataToSave = JSON.stringify(item)
+    const key = `${item.id}-${item.color}`
     localStorage.setItem(item.id, dataToSave)
 }
 
