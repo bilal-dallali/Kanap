@@ -92,18 +92,25 @@ function addQuantityToSettings(settings, item) {
     input.min = "1"
     input.max = "100"
     input.value = item.quantity
-    input.addEventListener("input", () => updatePriceAndQuantity(item.id, input.value))
+    input.addEventListener("input", () => updatePriceAndQuantity(item.id, input.value, item))
 
     quantity.appendChild(input)
     settings.appendChild(quantity)
 }
 
 // Changer la quantité via un clic
-function updatePriceAndQuantity(id, newValue) {
+function updatePriceAndQuantity(id, newValue, item) {
     const itemToUpdate = cart.find(item => item.id === id)
     itemToUpdate.quantity = Number(newValue)
     displayTotalQuantity()
     displayTotalPrice()
+    saveNewDataToCacheItem(item)
+}
+
+// Le local storage doit stocker les changements de quantité depuis le panier
+function saveNewDataToCacheItem(item) {
+    const dataToSave = JSON.stringify(item)
+    localStorage.setItem(item.id, dataToSave)
 }
 
 function loadDescription(item) {
