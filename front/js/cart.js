@@ -66,17 +66,36 @@ function loadSettings(item) {
     settings.classList.add("cart__item__content__settings")
 
     addQuantityToSettings(settings, item)
-    addDeleteToSettings(settings)
+    addDeleteToSettings(settings, item)
     return settings
 }
 
 function addDeleteToSettings(settings, item) {
     const div = document.createElement("div")
     div.classList.add("cart__item__content__settings__delete")
+    div.addEventListener("click", () => deleteItem(item))
+
     const p = document.createElement("p")
     p.textContent = "Supprimer"
     div.appendChild(p)
     settings.appendChild(div)
+}
+
+function deleteItem(item) {
+    const itemToDelete = cart.findIndex(product => product.id === item.id && product.color === item.color)
+    cart.splice(itemToDelete, 1)
+    console.log(cart)
+    displayTotalPrice()
+    displayTotalQuantity()
+    deleteDataFromCache(item)
+    deleteArticlefromPage(item)
+}
+
+function deleteArticlefromPage(item) {
+    const articleToDelete = document.querySelector(
+        `article[data-id="${item.id}"][data-color="${item.color}"]`
+    )
+    articleToDelete.remove()
 }
 
 function addQuantityToSettings(settings, item) {
@@ -105,11 +124,16 @@ function updatePriceAndQuantity(id, newValue, item) {
     item.quantity = itemToUpdate.quantity
     displayTotalQuantity()
     displayTotalPrice()
-    saveNewDataToCacheItem(item)
+    saveNewDataToCache(item)
+}
+
+function deleteDataFromCache(item) {
+    const key = `${item.id}-${item.color}`
+    localStorage.removeItem(key)
 }
 
 // Le local storage doit stocker les changements de quantité depuis le panier
-function saveNewDataToCacheItem(item) {
+function saveNewDataToCache(item) {
     const dataToSave = JSON.stringify(item)
     const key = `${item.id}-${item.color}`
     localStorage.setItem(item.id, dataToSave)
