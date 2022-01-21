@@ -84,7 +84,6 @@ function addDeleteToSettings(settings, item) {
 function deleteItem(item) {
     const itemToDelete = cart.findIndex(product => product.id === item.id && product.color === item.color)
     cart.splice(itemToDelete, 1)
-    console.log(cart)
     displayTotalPrice()
     displayTotalQuantity()
     deleteDataFromCache(item)

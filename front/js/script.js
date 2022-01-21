@@ -2,7 +2,6 @@
 fetch("http://localhost:3000/api/products")
     .then((res) => res.json())
     .then((data) => {
-        //console.log(data)
         return addProducts(data)
     })
 
@@ -12,8 +11,6 @@ function addProducts(data) {
 
     // On affiche les autres articles / canapés
     data.forEach((couch) => {
-        //console.log("couch number : ", couch)
-
         const {_id, imageUrl, altTxt, name, price, description} = couch
         const anchor = makeAnchor(_id)
         const article = document.createElement("article")
@@ -45,7 +42,6 @@ function appendArticleToAnchor(anchor, article) {
     if (items != null) {
         items.appendChild(anchor)
         anchor.appendChild(article)
-        //console.log("object added to items", items)
     }
 }
 
