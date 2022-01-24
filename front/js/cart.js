@@ -4,12 +4,8 @@ const cart = []
 retrieveItemsFromCache()
 cart.forEach((item) => displayItem(item))
 
-// altText: "Photo d'un canapé bleu, deux places"
-// color: "Black"
-// id: "107fb5b75607497b96722bda5b504926"
-// imageUrl: "http://localhost:3000/images/kanap01.jpeg"
-// price: 1849
-// quantity: 3
+const orderButton = document.querySelector("#order")
+orderButton.addEventListener("click", (e) => submitForm(e))
 
 function retrieveItemsFromCache() {
     const numberOfItems = localStorage.length
@@ -176,4 +172,53 @@ function makeImageDiv(item) {
     image.alt = item.altText
     div.appendChild(image)
     return div
+}
+
+function submitForm(e) {
+    e.preventDefault()
+    if (cart.length === 0) alert("Please select at least an item to buy")
+    //alert("form submit")
+    const body = loadRequestBody()
+    fetch("http://localhost:3000/api/products/order", {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+            "Content-Type" : "application/json"
+        }
+    })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+    //console.log(form.elements.firstName)
+}
+
+function loadRequestBody() {
+    const form = document.querySelector(".cart__order__form")
+    const firstName = form.elements.firstName.value
+    const lastName = form.elements.lastName.value
+    const address = form.elements.address.value
+    const city = form.elements.city.value
+    const email = form.elements.email.value
+    const body = {
+        contact: {
+            firstName: firstName,
+            lastName: lastName,
+            address: address,
+            city: city,
+            email: email
+        },
+        products: getIdsFromCache()
+    }
+    return body
+}
+
+function getIdsFromCache() {
+    const numberOfProducts = localStorage.length
+    const ids = []
+    for (let i = 0; i < numberOfProducts; i++) {
+        const key = localStorage.key(i)
+        console.log(key)
+        const id = key.split("-")[0]
+        ids.push(id)
+    }
+    return ids
 }
