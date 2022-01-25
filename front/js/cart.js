@@ -193,14 +193,17 @@ function submitForm(e) {
         }
     })
         .then((res) => res.json())
-        .then((data) => console.log(data))
-    //console.log(form.elements.firstName)
+        .then((data) => {
+            const orderId = data.orderId
+            window.location.href = "/front/html/confirmation.html" + "?orderId=" + orderId
+        })
+        .catch((err) => console.error(err))
 }
 
 
 function isEmailValid() {
     const email = document.getElementById("email").value
-    console.log(email)
+
     const regex = /^[A-Za-z0-9+_.-]+@(.+)$/
     if (regex.test(email) === false) {
         alert("Please enter valid email")
@@ -247,7 +250,6 @@ function getIdsFromCache() {
     const ids = []
     for (let i = 0; i < numberOfProducts; i++) {
         const key = localStorage.key(i)
-        console.log(key)
         const id = key.split("-")[0]
         ids.push(id)
     }
