@@ -176,8 +176,14 @@ function makeImageDiv(item) {
 
 function submitForm(e) {
     e.preventDefault()
-    if (cart.length === 0) alert("Please select at least an item to buy")
-    //alert("form submit")
+    if (cart.length === 0) {
+        alert("Please select at least an item to buy")
+        return
+    }
+
+    if (isFormValid()) return
+    if (isEmailValid()) return
+    
     const body = loadRequestBody()
     fetch("http://localhost:3000/api/products/order", {
         method: "POST",
@@ -189,6 +195,31 @@ function submitForm(e) {
         .then((res) => res.json())
         .then((data) => console.log(data))
     //console.log(form.elements.firstName)
+}
+
+
+function isEmailValid() {
+    const email = document.getElementById("email").value
+    console.log(email)
+    const regex = /^[A-Za-z0-9+_.-]+@(.+)$/
+    if (regex.test(email) === false) {
+        alert("Please enter valid email")
+        return true
+    }
+    return false
+}
+
+
+function isFormValid() {
+    const form = document.querySelector(".cart__order__form")
+    const inputs = form.querySelectorAll("input")
+    inputs.forEach((input) => {
+        if (input.value === "") {
+            alert("Please fill all the fields")
+            return true
+        }
+        return false
+    })
 }
 
 function loadRequestBody() {
