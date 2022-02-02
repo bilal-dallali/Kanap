@@ -7,6 +7,7 @@ cart.forEach((item) => displayItem(item))
 const orderButton = document.querySelector("#order")
 orderButton.addEventListener("click", (e) => submitForm(e))
 
+//On récupère le nombre d'articles depuis le local storage
 function retrieveItemsFromCache() {
     const numberOfItems = localStorage.length
     for(let i = 0; i < numberOfItems; i++){
@@ -16,6 +17,7 @@ function retrieveItemsFromCache() {
     }
 }
 
+// Afficher l'article
 function displayItem(item) {
     const article = makeArticle(item)
     const imageDiv = makeImageDiv(item)
@@ -28,12 +30,16 @@ function displayItem(item) {
     displayTotalPrice()
 }
 
+
+// Afficher le nombre d'articles
 function displayTotalQuantity() {
     const totalQuantity = document.getElementById("totalQuantity")
     const total = cart.reduce((total, item) => total + item.quantity, 0)
     totalQuantity.textContent = total
 }
 
+
+// Afficher le prix total des articles
 function displayTotalPrice() {
     let total = 0
     const totalPrice = document.getElementById("totalPrice")
@@ -45,6 +51,7 @@ function displayTotalPrice() {
     totalPrice.textContent = total
 }
 
+// Afficher le contenu des articles dans le panier
 function loadCartContent(item) {
     const cardItemContent = document.createElement("div")
     cardItemContent.classList.add("cart__item__content")
@@ -57,6 +64,7 @@ function loadCartContent(item) {
     return cardItemContent
 }
 
+// Afficher les paramètres quantité et valeur du ou des articles
 function loadSettings(item) {
     const settings = document.createElement("div")
     settings.classList.add("cart__item__content__settings")
@@ -66,6 +74,7 @@ function loadSettings(item) {
     return settings
 }
 
+// Bouton supprimer du panier des articles
 function addDeleteToSettings(settings, item) {
     const div = document.createElement("div")
     div.classList.add("cart__item__content__settings__delete")
@@ -77,6 +86,7 @@ function addDeleteToSettings(settings, item) {
     settings.appendChild(div)
 }
 
+// Fonction supprimer du panier
 function deleteItem(item) {
     const itemToDelete = cart.findIndex(product => product.id === item.id && product.color === item.color)
     cart.splice(itemToDelete, 1)
@@ -86,6 +96,7 @@ function deleteItem(item) {
     deleteArticlefromPage(item)
 }
 
+// ON supprime l'article de la page
 function deleteArticlefromPage(item) {
     const articleToDelete = document.querySelector(
         `article[data-id="${item.id}"][data-color="${item.color}"]`
@@ -93,6 +104,7 @@ function deleteArticlefromPage(item) {
     articleToDelete.remove()
 }
 
+// Rajouter une quantité d'articles depuis le panier
 function addQuantityToSettings(settings, item) {
     const quantity = document.createElement("div")
     quantity.classList.add("cart__item__content__settings__quantity")
@@ -122,6 +134,7 @@ function updatePriceAndQuantity(id, newValue, item) {
     saveNewDataToCache(item)
 }
 
+// Retirer les données des articles du cache
 function deleteDataFromCache(item) {
     const key = `${item.id}-${item.color}`
     localStorage.removeItem(key)
@@ -134,6 +147,8 @@ function saveNewDataToCache(item) {
     localStorage.setItem(item.id, dataToSave)
 }
 
+
+// Afficher la description, nom du produit, couleur et prix
 function loadDescription(item) {
     const description = document.createElement("div")
     description.classList.add("cart__item__content__description")
@@ -155,6 +170,7 @@ function displayArticle(article) {
     document.querySelector("#cart__items").appendChild(article)
 }
 
+// Afficher l'article
 function makeArticle(item) {
     const article = document.createElement("article")
     article.classList.add("cart__item")
@@ -163,6 +179,7 @@ function makeArticle(item) {
     return article
 }
 
+// Afficher l'image des articles
 function makeImageDiv(item) {
     const div = document.createElement("div")
     div.classList.add("cart__item__img")
@@ -174,6 +191,8 @@ function makeImageDiv(item) {
     return div
 }
 
+
+// Soumettre le formulaire
 function submitForm(e) {
     e.preventDefault()
     if (cart.length === 0) {
@@ -200,7 +219,7 @@ function submitForm(e) {
         .catch((err) => console.error(err))
 }
 
-
+// Vérifier la validité de l'email
 function isEmailValid() {
     const email = document.getElementById("email").value
 
@@ -212,7 +231,7 @@ function isEmailValid() {
     return false
 }
 
-
+// Vérifier la validité du formulaire
 function isFormValid() {
     const form = document.querySelector(".cart__order__form")
     const inputs = form.querySelectorAll("input")
@@ -225,6 +244,7 @@ function isFormValid() {
     })
 }
 
+//On révupère les éléments depuis l'API
 function loadRequestBody() {
     const form = document.querySelector(".cart__order__form")
     const firstName = form.elements.firstName.value
@@ -245,6 +265,7 @@ function loadRequestBody() {
     return body
 }
 
+// On récupère le nombre de produit depuis le local storage
 function getIdsFromCache() {
     const numberOfProducts = localStorage.length
     const ids = []

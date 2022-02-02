@@ -6,10 +6,12 @@ if (id != null) {
     let imgUrl, altText, ArticleName
 }
 
+// URL de l'API
 fetch(`http://localhost:3000/api/products/${id}`)
 .then((response) => response.json())
 .then((res) => handleData(res))
 
+// Récupérer les données depuis l'API
 function handleData(couch) {
     const { altTxt, colors, description, imageUrl, name, price, _id } = couch
     itemPrice = price
@@ -64,6 +66,7 @@ function loadColors(colors) {
 }
 
 
+//On ajoute les articles au panier
 const button = document.querySelector("#addToCart")
 button.addEventListener("click", handleClick)
 
@@ -76,7 +79,7 @@ function handleClick() {
     redirectToCart()
 }
 
-
+// Ordre des articles dans le panier
 function saveOrder(colors, quantity) {
     const key = `${id}-${colors}`
     const data = {
@@ -91,6 +94,7 @@ function saveOrder(colors, quantity) {
     localStorage.setItem(key, JSON.stringify(data))
 }
 
+// Message d'alerte en cas d'article non sélectionné
 function isOrderInvalid(colors, quantity) {
     if (colors == null || colors === "" || quantity == null || quantity == 0) {
         alert("Please choose a color and quantity")
@@ -98,6 +102,7 @@ function isOrderInvalid(colors, quantity) {
     }
 }
 
+// Redirection vers le panier si un article y est ajouté
 function redirectToCart() {
     window.location.href = "cart.html"
 }

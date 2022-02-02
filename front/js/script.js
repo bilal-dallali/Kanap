@@ -23,6 +23,8 @@ function addProducts(data) {
     })
 }
 
+
+// On ajoutel'image, le h3 et le p en éléments enfant de l'article
 function appendElementToArticle(article, image, h3, p) {
     article.appendChild(image)
     article.appendChild(h3)
